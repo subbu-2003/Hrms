@@ -98,7 +98,7 @@ const FacebookLogin: React.FC = () => {
   const [user, setUser] =
     useState<FacebookUser | null>(null);
 
-  const [accessToken, setAccessToken] =
+  const [, setAccessToken] =
     useState("");
 
   const [businesses, setBusinesses] =
