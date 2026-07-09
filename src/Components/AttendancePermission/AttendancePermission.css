@@ -1,0 +1,164 @@
+.ap-group-label--spaced {
+  margin-left: 8px;
+}
+
+/* ─── Header actions ─────────────────────────────────────── */
+.ap-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;         /* wraps the two groups on narrow screens */
+}
+
+.ap-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;     /* keeps label + buttons on one line */
+}
+
+.ap-group-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* ─── Filters row ────────────────────────────────────────── */
+.ap-filters {
+  display: flex;
+  gap: 20px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bg-white);
+  flex-wrap: wrap;
+}
+
+.ap-filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 220px;
+}
+
+.ap-filter-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+}
+
+/* ─── Table overrides ────────────────────────────────────── */
+.ap-table .ant-table-thead > tr > th {
+  white-space: nowrap;
+  padding: 12px 16px !important;
+}
+
+.ap-table .ant-table-tbody > tr > td {
+  padding: 14px 16px !important;
+  font-size: var(--font-size-body) !important;
+  color: #333 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  vertical-align: middle !important;
+}
+
+/* ─── Biometrics cell ────────────────────────────────────── */
+.ap-biometrics {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #555;
+}
+
+/* ─── Attendance Method cell ─────────────────────────────── */
+.ap-method-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.ap-method-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #555;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════
+   📱 MOBILE RESPONSIVE
+══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Header: title on top, action groups below */
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ap-header-actions {
+    width: 100%;
+    gap: 10px;
+  }
+
+  /* Each group takes full row on very small screens */
+  .ap-action-group {
+    flex: 1 1 auto;
+  }
+
+  /* Filters stack vertically, each item full width */
+  .ap-filters {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .ap-filter-item {
+    width: 100%;
+  }
+
+  /* Tighter cell padding */
+  .ap-table .ant-table-thead > tr > th {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .ap-table .ant-table-tbody > tr > td {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Method tags can wrap on mobile */
+  .ap-method-cell {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-filters {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  /* Stack each action group vertically on tiny screens */
+  .ap-header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ap-table .ant-table-thead > tr > th {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .ap-table .ant-table-tbody > tr > td {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .ap-method-tag {
+    font-size: 12px;
+  }
+}

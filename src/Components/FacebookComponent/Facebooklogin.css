@@ -1,0 +1,52 @@
+.facebook-login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+  padding: 20px;
+}
+
+.facebook-login-btn {
+  height: 50px;
+  padding: 0 30px;
+  font-size: 16px;
+  border-radius: 10px;
+  background: #1877f2 !important;
+  border-color: #1877f2 !important;
+}
+
+.facebook-user-card {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.token-section,
+.dropdown-section,
+.table-section {
+  margin-top: 20px;
+}
+
+.token-box {
+  width: 100%;
+  min-height: 100px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  padding: 10px;
+  resize: none;
+  font-size: 12px;
+}
+
+.loader-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

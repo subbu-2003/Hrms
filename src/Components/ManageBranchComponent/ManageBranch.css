@@ -1,0 +1,31 @@
+.manage-branch {
+  padding: 16px;
+}
+
+.manage-branch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.manage-branch-header .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-icon {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 14px;
+  color: #555;
+}

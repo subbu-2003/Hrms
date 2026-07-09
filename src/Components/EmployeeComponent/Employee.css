@@ -1,0 +1,60 @@
+
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.employee-title {
+  margin: 0 !important;
+}
+
+.employee-count {
+  color: var(--primary);
+}
+
+.employee-add-btn {
+  background-color: var(--primary) !important;
+}
+
+.branch-link {
+  color: var(--primary);
+}
+
+.status-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success);
+  font-weight: var(--font-weight-medium);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--success);
+  display: inline-block;
+}
+
+.status-chevron {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.status-cell.active {
+  color: var(--active);
+}
+
+.status-cell.inactive {
+  color: var(--inactive);
+}
+.status-dot.active {
+  background-color: var(--active);
+}
+
+.status-dot.inactive {
+  background-color: var(--inactive);
+}
