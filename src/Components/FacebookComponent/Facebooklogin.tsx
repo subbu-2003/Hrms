@@ -294,7 +294,7 @@ const fetchFacebookData = async (token: string) => {
     setApiLoading(true);
 
     const response = await fetch(
-      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts{&access_token=${token}`
+      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts&access_token=${token}`
     );
 
     const data = await response.json();
