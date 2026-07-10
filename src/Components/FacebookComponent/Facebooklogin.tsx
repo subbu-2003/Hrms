@@ -195,6 +195,7 @@ const FacebookLogin: React.FC = () => {
   // LOGIN
   // ======================================================
 const handleFacebookLogin = () => {
+  // Facebook Login requires HTTPS
   if (
     window.location.protocol !== "https:" &&
     window.location.hostname !== "localhost"
@@ -211,7 +212,7 @@ const handleFacebookLogin = () => {
   setLoading(true);
 
   window.FB.login(
-    async (response: any) => {
+    (response: any) => {
       setLoading(false);
 
       console.log("LOGIN RESPONSE:", response);
@@ -233,24 +234,21 @@ const handleFacebookLogin = () => {
         token
       );
 
-      // Check which permissions were actually granted
+      // Show permissions granted
       window.FB.api(
         "/me/permissions",
         (permissionResponse: any) => {
-          console.log(
-            "PERMISSIONS:",
-            permissionResponse
-          );
+          console.log("PERMISSIONS:", permissionResponse);
         }
       );
 
-      await fetchFacebookData(token);
+      // Fetch Facebook pages/businesses
+      fetchFacebookData(token);
 
+      // Fetch user profile
       fetchUserProfile();
 
-      message.success(
-        "Facebook Login Successful"
-      );
+      message.success("Facebook Login Successful");
     },
     {
       scope:
@@ -279,12 +277,12 @@ interface Business {
 }
 
 
-const fetchFacebookData = async (token: string) => {
+const fetchFacebookData = async (token: string): Promise<void> => {
   try {
     setApiLoading(true);
 
     const response = await fetch(
-      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts&access_token=${token}`
+      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts{id,name,category,category_list,access_token,tasks}&access_token=${token}`
     );
 
     const data = await response.json();
@@ -296,28 +294,25 @@ const fetchFacebookData = async (token: string) => {
       return;
     }
 
-    const pages: FacebookPage[] = data.accounts?.data ?? [];
+    const pages = data.accounts?.data ?? [];
 
     setPages(pages);
 
-    const businesses: Business[] = pages.map((page) => ({
-      id: page.id,
-      name: page.category
-    }));
-
-    setBusinesses(businesses);
+    setBusinesses(
+      pages.map((page: any) => ({
+        id: page.id,
+        name: page.category,
+      }))
+    );
 
     console.log("Pages:", pages);
-    console.log("Businesses:", businesses);
-
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     message.error("Failed to load Facebook data");
   } finally {
     setApiLoading(false);
   }
 };
-
   // ======================================================
   // GET PAGES
   // ======================================================
