@@ -51,18 +51,6 @@ interface FacebookUser {
   };
 }
 
-interface Business {
-  id: string;
-  name: string;
-}
-
-interface FacebookPage {
-  id: string;
-  name: string;
-  category?: string;
-  access_token: string;
-}
-
 interface LeadForm {
   id: string;
   name: string;
