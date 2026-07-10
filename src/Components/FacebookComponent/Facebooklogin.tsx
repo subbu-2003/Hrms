@@ -98,6 +98,10 @@ const FacebookLogin: React.FC = () => {
   const [pages, setPages] =
     useState<FacebookPage[]>([]);
 
+    useEffect(() => {
+  console.log("PAGES STATE:", pages);
+}, [pages]);
+
   const [selectedPage, setSelectedPage] =
     useState("");
 
@@ -736,41 +740,20 @@ const getPages = async (token: string) => {
           </Text>
 
           <Select
-            placeholder="Select Page"
-            style={{
-              width: "100%",
-              marginTop: 10,
-            }}
-            value={
-              selectedPage ||
-              undefined
-            }
-            onChange={(
-              value
-            ) =>
-              getLeadForms(
-                value
-              )
-            }
-          >
-
-            {pages.map(
-              (page) => (
-
-                <Select.Option
-                  key={
-                    page.id
-                  }
-                  value={
-                    page.id
-                  }
-                >
-                  {page.name}
-                </Select.Option>
-              )
-            )}
-
-          </Select>
+  placeholder="Select Page"
+  style={{ width: "100%", marginTop: 10 }}
+  value={selectedPage}
+  onChange={(value) => {
+    setSelectedPage(value);
+    getLeadForms(value);
+  }}
+>
+  {pages.map((page) => (
+    <Select.Option key={page.id} value={page.id}>
+      {page.name} ({page.category})
+    </Select.Option>
+  ))}
+</Select>
 
           <Divider />
 
