@@ -194,51 +194,37 @@ const FacebookLogin: React.FC = () => {
   // ======================================================
   // LOGIN
   // ======================================================
+const handleFacebookLogin = () => {
+  if (
+    window.location.protocol !== "https:" &&
+    window.location.hostname !== "localhost"
+  ) {
+    message.error("Facebook Login requires HTTPS");
+    return;
+  }
 
-  const handleFacebookLogin = () => {
+  if (!sdkLoaded) {
+    message.error("Facebook SDK not loaded");
+    return;
+  }
 
-    // IMPORTANT
-    // Facebook login requires HTTPS
-    // localhost is allowed only in development
+  setLoading(true);
 
-    if (
-      window.location.protocol !==
-        "https:" &&
-      window.location.hostname !==
-        "localhost"
-    ) {
+  window.FB.login(
+    async (response: any) => {
+      setLoading(false);
 
-      message.error(
-        "Facebook Login requires HTTPS"
-      );
+      console.log("LOGIN RESPONSE:", response);
 
-      return;
-    }
+      if (!response.authResponse) {
+        message.warning("Facebook Login Cancelled");
+        return;
+      }
 
-    if (!sdkLoaded) {
+      const token = response.authResponse.accessToken;
 
-      message.error(
-        "Facebook SDK not loaded"
-      );
-
-      return;
-    }
-
-    setLoading(true);
-
-   window.FB.login(
-  (response: any) => {
-    setLoading(false);
-
-    console.log(
-      "LOGIN RESPONSE:",
-      response
-    );
-
-    if (response.authResponse) {
-
-      const token =
-        response.authResponse.accessToken;
+      console.log("ACCESS TOKEN:", token);
+      console.log("GRANTED SCOPES:", response.authResponse.grantedScopes);
 
       setAccessToken(token);
 
@@ -247,29 +233,33 @@ const FacebookLogin: React.FC = () => {
         token
       );
 
-      fetchUserProfile();
+      // Check which permissions were actually granted
+      window.FB.api(
+        "/me/permissions",
+        (permissionResponse: any) => {
+          console.log(
+            "PERMISSIONS:",
+            permissionResponse
+          );
+        }
+      );
 
-      fetchFacebookData(token);
+      await fetchFacebookData(token);
+
+      fetchUserProfile();
 
       message.success(
         "Facebook Login Successful"
       );
-
-    } else {
-
-      message.warning(
-        "Facebook Login Cancelled"
-      );
+    },
+    {
+      scope:
+        "public_profile,pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads",
+      auth_type: "rerequest",
+      return_scopes: true,
     }
-  },
-
-  {
-    scope:
-      "public_profile,pages_show_list,business_management,leads_retrieval,pages_read_engagement,pages_manage_ads",
-    return_scopes: true,
-  }
-);
-  };
+  );
+};
 
   interface FacebookPage {
   id: string;
