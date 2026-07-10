@@ -267,7 +267,7 @@ const FacebookLogin: React.FC = () => {
 
   {
     scope:
-      "public_profile",
+      "public_profile,pages_show_list,business_management,leads_retrieval,pages_read_engagement,pages_manage_ads",
     return_scopes: true,
   }
 );
