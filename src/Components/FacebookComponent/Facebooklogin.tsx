@@ -249,9 +249,7 @@ const FacebookLogin: React.FC = () => {
 
       fetchUserProfile();
 
-      getBusinesses(token);
-
-      getPages(token);
+      fetchFacebookData(token);
 
       message.success(
         "Facebook Login Successful"
@@ -273,13 +271,62 @@ const FacebookLogin: React.FC = () => {
 );
   };
 
-  // ======================================================
-  // GET BUSINESSES
-  // ======================================================
+  interface FacebookPage {
+  id: string;
+  name: string;
+  category: string;
+  category_list: {
+    id: string;
+    name: string;
+  }[];
+  access_token: string;
+  tasks: string[];
+}
+
 interface Business {
   id: string;
   name: string;
 }
+
+
+const fetchFacebookData = async (token: string) => {
+  try {
+    setApiLoading(true);
+
+    const response = await fetch(
+      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts{id,name,category,category_list,access_token,tasks}&access_token=${token}`
+    );
+
+    const data = await response.json();
+
+    console.log("FACEBOOK RESPONSE:", data);
+
+    if (data.error) {
+      message.error(data.error.message);
+      return;
+    }
+
+    const pages: FacebookPage[] = data.accounts?.data ?? [];
+
+    setPages(pages);
+
+    const businesses: Business[] = pages.map((page) => ({
+      id: page.id,
+      name: page.category
+    }));
+
+    setBusinesses(businesses);
+
+    console.log("Pages:", pages);
+    console.log("Businesses:", businesses);
+
+  } catch (err) {
+    console.error(err);
+    message.error("Failed to load Facebook data");
+  } finally {
+    setApiLoading(false);
+  }
+};
 
 const getBusinesses = async (token: string) => {
   try {
@@ -692,46 +739,21 @@ const getPages = async (token: string) => {
             Businesses
           </Text>
 
-          <Select
-            placeholder="Select Business"
-            style={{
-              width: "100%",
-              marginTop: 10,
-            }}
-            value={
-              selectedBusiness ||
-              undefined
-            }
-            onChange={(
-              value
-            ) =>
-              setSelectedBusiness(
-                value
-              )
-            }
-          >
-
-            {businesses.map(
-              (
-                business
-              ) => (
-
-                <Select.Option
-                  key={
-                    business.id
-                  }
-                  value={
-                    business.id
-                  }
-                >
-                  {
-                    business.name
-                  }
-                </Select.Option>
-              )
-            )}
-
-          </Select>
+         <Select
+    placeholder="Select Business"
+    style={{ width: "100%", marginTop: 10 }}
+    value={selectedBusiness || undefined}
+    onChange={(value) => setSelectedBusiness(value)}
+>
+    {businesses.map((business) => (
+        <Select.Option
+            key={business.id}
+            value={business.id}
+        >
+            {business.name}
+        </Select.Option>
+    ))}
+</Select>
 
           <Divider />
 
@@ -739,20 +761,23 @@ const getPages = async (token: string) => {
             Facebook Pages
           </Text>
 
-          <Select
-  placeholder="Select Page"
-  style={{ width: "100%", marginTop: 10 }}
-  value={selectedPage}
-  onChange={(value) => {
-    setSelectedPage(value);
-    getLeadForms(value);
-  }}
+         <Select
+    placeholder="Select Page"
+    style={{ width: "100%", marginTop: 10 }}
+    value={selectedPage || undefined}
+    onChange={(value) => {
+        setSelectedPage(value);
+        getLeadForms(value);
+    }}
 >
-  {pages.map((page) => (
-    <Select.Option key={page.id} value={page.id}>
-      {page.name} ({page.category})
-    </Select.Option>
-  ))}
+    {pages.map((page) => (
+        <Select.Option
+            key={page.id}
+            value={page.id}
+        >
+            {page.name}
+        </Select.Option>
+    ))}
 </Select>
 
           <Divider />
