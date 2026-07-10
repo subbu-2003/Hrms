@@ -328,40 +328,6 @@ const fetchFacebookData = async (token: string) => {
   }
 };
 
-const getBusinesses = async (token: string) => {
-  try {
-    let allBusinesses: Business[] = [];
-
-    let nextUrl =
-      `https://graph.facebook.com/v25.0/me/accounts?fields=id,name&limit=100&access_token=${token}`;
-
-    while (nextUrl) {
-      const response = await fetch(nextUrl);
-
-      const data = await response.json();
-
-      console.log("PAGE DATA:", data);
-
-      if (data.error) {
-        message.error(data.error.message);
-        return;
-      }
-
-      if (Array.isArray(data.data)) {
-        allBusinesses.push(...data.data);
-      }
-
-      nextUrl = data.paging?.next ?? "";
-    }
-
-    setBusinesses(allBusinesses);
-
-    console.log("ALL PAGES:", allBusinesses);
-  } catch (error) {
-    console.error(error);
-    message.error("Failed to load pages");
-  }
-};
   // ======================================================
   // GET PAGES
   // ======================================================
@@ -378,35 +344,6 @@ const getBusinesses = async (token: string) => {
   tasks: string[];
 }
 
-const getPages = async (token: string) => {
-  try {
-    setApiLoading(true);
-
-    const response = await fetch(
-      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts&access_token=${token}`
-    );
-
-    const data = await response.json();
-
-    console.log("PAGES RESPONSE:", data);
-
-    if (data.error) {
-      message.error(data.error.message);
-      return;
-    }
-
-    const allPages: FacebookPage[] = data.accounts?.data ?? [];
-
-    console.log("ALL PAGES:", allPages);
-
-    setPages(allPages);
-  } catch (error) {
-    console.error(error);
-    message.error("Failed to load pages");
-  } finally {
-    setApiLoading(false);
-  }
-};
 
   // ======================================================
   // GET FORMS
