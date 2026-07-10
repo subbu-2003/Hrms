@@ -187,7 +187,7 @@ const FacebookLogin: React.FC = () => {
 
       {
         fields:
-          "id,name,accounts",
+          "id,name,picture,accounts",
       },
 
       (
@@ -284,137 +284,87 @@ const FacebookLogin: React.FC = () => {
   // ======================================================
   // GET BUSINESSES
   // ======================================================
-const getBusinesses = async (
-  token: string
-) => {
+interface Business {
+  id: string;
+  name: string;
+}
 
+const getBusinesses = async (token: string) => {
   try {
-
     let allBusinesses: Business[] = [];
 
     let nextUrl =
-      `https://graph.facebook.com/v19.0/me/businesses?fields=id,name&limit=100&access_token=${token}`;
+      `https://graph.facebook.com/v25.0/me/accounts?fields=id,name&limit=100&access_token=${token}`;
 
     while (nextUrl) {
+      const response = await fetch(nextUrl);
 
-      const response =
-        await fetch(nextUrl);
+      const data = await response.json();
 
-      const data =
-        await response.json();
-
-      console.log(
-        "BUSINESS DATA:",
-        data
-      );
+      console.log("PAGE DATA:", data);
 
       if (data.error) {
-
-        message.error(
-          data.error.message
-        );
-
+        message.error(data.error.message);
         return;
       }
 
-      if (data.data) {
-
-        allBusinesses = [
-          ...allBusinesses,
-          ...data.data,
-        ];
+      if (Array.isArray(data.data)) {
+        allBusinesses.push(...data.data);
       }
 
-      nextUrl =
-        data.paging?.next || "";
+      nextUrl = data.paging?.next ?? "";
     }
 
-    setBusinesses(
-      allBusinesses
-    );
+    setBusinesses(allBusinesses);
 
-    console.log(
-      "ALL BUSINESSES:",
-      allBusinesses
-    );
-
+    console.log("ALL PAGES:", allBusinesses);
   } catch (error) {
-
     console.error(error);
-
-    message.error(
-      "Failed to load businesses"
-    );
+    message.error("Failed to load pages");
   }
 };
   // ======================================================
   // GET PAGES
   // ======================================================
 
- const getPages = async (
-  token: string
-) => {
+ interface FacebookPage {
+  id: string;
+  name: string;
+  category: string;
+  category_list: {
+    id: string;
+    name: string;
+  }[];
+  access_token: string;
+  tasks: string[];
+}
 
+const getPages = async (token: string) => {
   try {
-
     setApiLoading(true);
 
-    let allPages: FacebookPage[] = [];
+    const response = await fetch(
+      `https://graph.facebook.com/v25.0/me?fields=id,name,accounts{id,name,category,category_list,access_token,tasks}&access_token=${token}`
+    );
 
-    let nextUrl =
-      `https://graph.facebook.com/v19.0/me/accounts?fields=id,name,category,access_token&limit=100&access_token=${token}`;
+    const data = await response.json();
 
-    while (nextUrl) {
+    console.log("PAGES RESPONSE:", data);
 
-      const response =
-        await fetch(nextUrl);
-
-      const data =
-        await response.json();
-
-      console.log(
-        "PAGES RESPONSE:",
-        data
-      );
-
-      if (data.error) {
-
-        message.error(
-          data.error.message
-        );
-
-        return;
-      }
-
-      if (data.data) {
-
-        allPages = [
-          ...allPages,
-          ...data.data,
-        ];
-      }
-
-      nextUrl =
-        data.paging?.next || "";
+    if (data.error) {
+      message.error(data.error.message);
+      return;
     }
 
-    console.log(
-      "ALL PAGES:",
-      allPages
-    );
+    const allPages: FacebookPage[] = data.accounts?.data ?? [];
+
+    console.log("ALL PAGES:", allPages);
 
     setPages(allPages);
-
   } catch (error) {
-
     console.error(error);
-
-    message.error(
-      "Failed to load pages"
-    );
-
+    message.error("Failed to load pages");
   } finally {
-
     setApiLoading(false);
   }
 };
