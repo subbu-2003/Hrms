@@ -28,7 +28,7 @@ import "./Facebooklogin.css";
 const { Title, Text } = Typography;
 
 const FACEBOOK_APP_ID =
-  "958159627267632";
+  "2115848182608591";
 
 // ======================================================
 // TYPES
