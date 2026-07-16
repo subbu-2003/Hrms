@@ -64,7 +64,7 @@ export default function FacebookLogin() {
     window.FB.api(
       "/me",
       {
-        fields: "id,name,picture,email",
+        fields: "id,name,picture,email,accounts",
       },
       (response: any) => {
         console.log("USER PROFILE");
