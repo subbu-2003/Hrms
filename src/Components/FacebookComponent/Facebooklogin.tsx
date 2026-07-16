@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const FACEBOOK_APP_ID = "YOUR_FACEBOOK_APP_ID";
+const FACEBOOK_APP_ID = "2115848182608591";
 
 interface FacebookUser {
   id: string;
