@@ -229,18 +229,12 @@ const handleFacebookLogin = () => {
 
       setAccessToken(token);
 
-      localStorage.setItem(
-        "facebook_access_token",
-        token
-      );
+      localStorage.setItem("facebook_access_token", token);
 
       // Show permissions granted
-      window.FB.api(
-        "/me/permissions",
-        (permissionResponse: any) => {
-          console.log("PERMISSIONS:", permissionResponse);
-        }
-      );
+      window.FB.api("/me/permissions", (permissionResponse: any) => {
+        console.log("PERMISSIONS:", permissionResponse);
+      });
 
       // Fetch Facebook pages/businesses
       fetchFacebookData(token);
@@ -251,9 +245,8 @@ const handleFacebookLogin = () => {
       message.success("Facebook Login Successful");
     },
     {
-      // pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads
       scope:
-        "public_profile",
+        "public_profile,pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads",
       auth_type: "rerequest",
       return_scopes: true,
     }
