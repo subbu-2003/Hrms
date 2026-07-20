@@ -28,7 +28,7 @@ import "./Facebooklogin.css";
 const { Title, Text } = Typography;
 
 const FACEBOOK_APP_ID =
-  "958159627267632";
+  "2115848182608591";
 
 // ======================================================
 // TYPES
@@ -253,7 +253,7 @@ const handleFacebookLogin = () => {
     {
       // pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads
       scope:
-        "public_profile,pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads",
+        "public_profile",
       auth_type: "rerequest",
       return_scopes: true,
     }
