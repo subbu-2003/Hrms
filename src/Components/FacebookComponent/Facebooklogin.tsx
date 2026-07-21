@@ -253,7 +253,7 @@ const handleFacebookLogin = () => {
     {
       // pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads
       scope:
-        "public_profile",
+        "public_profile,pages_show_list,pages_read_engagement,business_management,leads_retrieval,pages_manage_ads",
       auth_type: "rerequest",
       return_scopes: true,
     }
