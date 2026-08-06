@@ -30,6 +30,16 @@ const FACEBOOK_APP_ID = "958159627267632";
 // version strings in different fetch calls. Bump this in one place only.
 const FB_GRAPH_VERSION = "v21.0";
 
+// Facebook Login for Business Configuration ID.
+// Create this at: App Dashboard > Facebook Login for Business > Configurations
+// (Asset type: Facebook Page, with pages_show_list, pages_read_engagement,
+// business_management, leads_retrieval enabled). Advanced-access business
+// permissions like business_management / leads_retrieval CANNOT be requested
+// via a plain `scope` string anymore — they must go through this config_id,
+// otherwise you get "This app isn't available... needs at least one
+// supported permission".
+const FB_LOGIN_CONFIG_ID = "1304410448129305";
+
 // ======================================================
 // TYPES
 // ======================================================
@@ -229,8 +239,10 @@ const FacebookLogin: React.FC = () => {
         message.success("Facebook Login Successful");
       },
       {
-        scope:
-          "public_profile,pages_show_list,pages_read_engagement,business_management,leads_retrieval",
+        // Facebook Login for Business flow: business-scoped permissions
+        // (business_management, leads_retrieval, etc.) must be requested
+        // through a config_id, not a plain `scope` string.
+        config_id: FB_LOGIN_CONFIG_ID,
         auth_type: "rerequest",
         return_scopes: true,
       }
