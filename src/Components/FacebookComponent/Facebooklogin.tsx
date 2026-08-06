@@ -101,7 +101,11 @@ const FacebookLogin: React.FC = () => {
   const [apiLoading, setApiLoading] = useState(false);
 
   const [user, setUser] = useState<FacebookUser | null>(null);
-  const [accessToken, setAccessToken] = useState("");
+  // accessToken value itself isn't rendered anywhere in the UI, only
+  // used inside handlers (closures capture it via setAccessToken calls
+  // and localStorage), so we intentionally don't read the getter here
+  // to avoid a TS6133 "declared but never read" build error.
+  const [, setAccessToken] = useState("");
 
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [selectedBusiness, setSelectedBusiness] = useState("");
